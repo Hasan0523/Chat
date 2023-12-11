@@ -39,7 +39,7 @@ fun LoginScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
         var text = remember { mutableStateOf("hasan") }
-        TextField(value = email.value, onValueChange = {email.value = it})
+        TextField(value = email.value, onValueChange = {email.value = it}, label = {Text("abc@gmail.com")})
     }
 }
 
