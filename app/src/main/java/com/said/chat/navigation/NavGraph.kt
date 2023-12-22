@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.said.chat.sceens.ChangePasswordScreen
 import com.said.chat.sceens.ChatScreen
 import com.said.chat.sceens.HomeScreen
 import com.said.chat.sceens.LoginScreen
@@ -35,6 +36,9 @@ fun NavGraph (){
             navArgument("key"){type= NavType.StringType}
         )) {
             ChatScreen(navController, it.arguments?.getString("key")!!)
+        }
+        composable(Screens.ChangePassword.route){
+            ChangePasswordScreen()
         }
     }
 }

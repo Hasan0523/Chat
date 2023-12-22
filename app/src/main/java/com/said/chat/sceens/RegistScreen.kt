@@ -30,22 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.said.chat.R
 import com.said.chat.api.Firebase
 import com.said.chat.navigation.Screens
 import com.said.chat.ui.theme.Background
 import com.said.chat.ui.theme.BlueLight
 
-@Preview
-@Composable
-fun Registprev (){
-    RegisterScreen(navController = rememberNavController())
-}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +50,6 @@ fun RegisterScreen(navController: NavController){
     val userName = remember { mutableStateOf("") }
     val lastName = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val retypePassword = remember { mutableStateOf("") }
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -79,7 +72,7 @@ fun RegisterScreen(navController: NavController){
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
             ),
-            label = { Text("Firstname") },
+            label = { Text("Ism") },
             leadingIcon ={
                 Icon(
              imageVector = Icons.Rounded.Person, contentDescription = "", tint = Color.Black
@@ -98,7 +91,7 @@ fun RegisterScreen(navController: NavController){
             value = lastName.value,
 
             onValueChange = { lastName.value = it.trim() },
-            label = { Text("LastName")},
+            label = { Text("Familiya")},
             leadingIcon ={
                 Icon(
                     imageVector = Icons.Rounded.Person, contentDescription = "", tint = Color.Black
@@ -116,7 +109,6 @@ fun RegisterScreen(navController: NavController){
                 unfocusedIndicatorColor = Color.Transparent,
             ),
             value = userName.value,
-
             onValueChange = { userName.value = it.trim() },
             label = { Text("Username") },
             leadingIcon = {
@@ -137,33 +129,17 @@ fun RegisterScreen(navController: NavController){
             value = password.value,
             shape = RoundedCornerShape(16.dp),
             onValueChange = { password.value = it.trim() },
-            label = { Text("Password") },
+            label = { Text("Parol") },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Rounded.Lock, contentDescription = "", tint = Color.Black
                 )
             },
             )
-        TextField(modifier = Modifier.padding(12.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.Black,
-                containerColor = Color(android.graphics.Color.parseColor("#ECFEFF")),
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-            ),
-            value = retypePassword.value,
-            shape = RoundedCornerShape(16.dp),
-            onValueChange = { retypePassword.value = it.trim() },
-            label = { Text("Retype password") },
-            leadingIcon = {
-            Icon(
-                imageVector = Icons.Rounded.Lock, contentDescription = "", tint = Color.Black
-            )
-        },)
         Button(
             onClick = {
                 if (pressed) return@Button
-                if (firstName.value.isNotEmpty() && userName.value.isNotEmpty() && password.value.isNotEmpty() && password.value == retypePassword.value){
+                if (firstName.value.isNotEmpty() && userName.value.isNotEmpty() && password.value.isNotEmpty()){
                     pressed = true
                     Firebase.usernameAvailable(userName.value){ available->
                         if(!available){
@@ -189,7 +165,7 @@ fun RegisterScreen(navController: NavController){
 
         ) {
             Text(
-                text = "Sign up",
+                text = "Ro'yhatdan o'tish",
                 modifier = Modifier .padding(6.dp),
                 color = Color.Black,
                 fontSize = 14.sp
@@ -207,7 +183,7 @@ fun RegisterScreen(navController: NavController){
 
         ) {
             Text(
-                text = "Log in",
+                text = "Tizimga kirish",
                 modifier = Modifier .padding(6.dp),
                 color = Color.Black,
                 fontSize = 14.sp

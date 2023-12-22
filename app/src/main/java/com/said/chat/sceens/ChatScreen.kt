@@ -3,6 +3,7 @@ package com.said.chat.sceens
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,16 +40,22 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.said.chat.R
 import com.said.chat.api.Firebase
 import com.said.chat.api.SharedHelper
 import com.said.chat.model.Message
 import com.said.chat.model.User
+import com.said.chat.ui.theme.Background
 import com.said.chat.ui.theme.BlueLight
+import com.said.chat.ui.theme.Gray
 
 @Composable
 fun ChatScreen(navController: NavController, key:String){
@@ -67,12 +74,14 @@ fun ChatScreen(navController: NavController, key:String){
 
 
 
-    Column {
+    Column(modifier = Modifier.background(Background)){
         ChatTopBar(user)
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
+                , horizontalAlignment = Alignment.CenterHorizontally
+
         ) {
             items(messages.size) { index ->
                 MessageItem(messages[index], index)
@@ -108,11 +117,11 @@ fun MessageItem(
 //                    }
                 ),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(if (fromMe) BlueLight else Color.Gray)
+            colors = CardDefaults.cardColors(if (fromMe) BlueLight else Gray)
         ) {
             Text(
                 text = message.text!!,
-                color = Color.Black,
+                color = Color.White,
                 modifier = Modifier.padding(12.dp),
                 textAlign = if (fromMe) TextAlign.End else TextAlign.Start
             )
@@ -125,7 +134,8 @@ fun MessageItem(
 fun ChatTopBar(user: MutableState<User>) {
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-    Row {
+    Row (modifier = Modifier.padding(12.dp),
+        horizontalArrangement = Arrangement.Center){
         IconButton(onClick = { backDispatcher?.onBackPressed() }) {
             Icon(Icons.Rounded.ArrowBack, "", Modifier.size(40.dp))
         }
@@ -135,7 +145,7 @@ fun ChatTopBar(user: MutableState<User>) {
             Text(text = user.value.firstName + " " + user.value.lastName, textAlign = TextAlign.Center, color = Color.Black)
             Text(text = user.value.username!!, textAlign = TextAlign.Center, color = Color.Gray, fontSize = 12.sp)
         }
-        Image(Icons.Rounded.Person, contentDescription = "")
+        Image(painter = painterResource(id =R.drawable.person ),contentDescription ="" )
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)

@@ -23,12 +23,17 @@ import com.said.chat.R
 import com.said.chat.api.SharedHelper
 import com.said.chat.navigation.Screens
 import kotlinx.coroutines.delay
+@Preview
+@Composable
+fun Splashprev(){
+    SplashScreen(navController = rememberNavController())
+}
 @Composable
 
     fun SplashScreen(navController: NavHostController) {
     val context = LocalContext.current
         LaunchedEffect(Unit){
-            delay(3000)
+            delay(2200)
             if (SharedHelper.getInstance(context).getKey().isEmpty()) navController.navigate(Screens.Login.route)
             else navController.navigate(Screens.Home.route)
         }

@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Person
@@ -42,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph
 import androidx.navigation.compose.rememberNavController
 import com.said.chat.R
 import com.said.chat.api.Firebase
@@ -64,7 +67,6 @@ fun HomeScreen(navController: NavController) {
     val currentUserKey = SharedHelper.getInstance(context).getKey()
     val chats = remember { mutableStateListOf<User>() }
     val users = remember { mutableStateListOf<User>() }
-
     val search = remember { mutableStateOf("") }
 
     Firebase.getChats(search.value, context) {it1->
@@ -121,7 +123,7 @@ fun LazyItem(index: Int, chat: User, navController: NavController) {
                 navController.navigate("chat_screen/${chat.key!!}")
             }, verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(Icons.Rounded.Person, contentDescription = "", Modifier.height(50.dp))
+     Image(painter = painterResource(id = R.drawable.person),  contentDescription = "", Modifier.height(50.dp))
         Column(
             verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.Start,
             modifier = Modifier.weight(1f)
@@ -152,14 +154,16 @@ fun TopBar(search: MutableState<String>, navController: NavController) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Button(
-            onClick = { }, modifier = Modifier
+            onClick = {
+                navController.navigate(Screens.ChangePassword.route)
+            }, modifier = Modifier
                 .size(60.dp),
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(containerColor = White)
 
         ) {
             Image(
-                painter = painterResource(id = R.drawable.person_icon),
+                painter = painterResource(id = R.drawable.person),
                 contentDescription = "",
                 Modifier.fillMaxSize()
             )
@@ -183,7 +187,11 @@ fun TopBar(search: MutableState<String>, navController: NavController) {
         Button(
             onClick = {
                 SharedHelper.getInstance(context).logOut()
-                navController.navigate(Screens.Login.route)
+                navController.navigate(Screens.Login.route){
+                    popUpTo(navController.graph.id){
+                        inclusive = true
+                    }
+                }
             }, modifier = Modifier
                 .size(60.dp),
             shape = CircleShape,

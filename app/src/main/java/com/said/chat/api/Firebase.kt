@@ -133,19 +133,24 @@ class Firebase private constructor() {
             })
         }
 
-        private fun getCurrentUser(context: Context, callback: (User) -> Unit) {
-            getUser(SharedHelper.getInstance(context).getKey()) {
-                callback(it)
-            }
-        }
+        fun updatePassword(new:String, old:String, context: Context, callback: (Boolean) -> Unit) {
+            val currentKey = SharedHelper.getInstance(context).getKey()
+            users.child(currentKey).child("password").addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val passwordOld = snapshot.getValue(String::class.java)
+                    if (passwordOld == old){
+                        users.child(currentKey).child("password").setValue(new)
+                        callback(true)
+                    }else{
+                        callback(false)
+                    }
+                }
 
-        fun updateUser(key: String, user: User, context: Context) {
-            users.child(key).child("username").setValue(user.username)
-            users.child(key).child("firstName").setValue(user.firstName)
-            users.child(key).child("lastName").setValue(user.lastName)
-            users.child(key).child("password").setValue(user.password)
-            users.child(key).child("image").setValue(user.image)
-            Toast.makeText(context, "Account data updated", Toast.LENGTH_SHORT).show()
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("TAG", "onCancelled: $error")
+                }
+
+            })
         }
 
         fun getUser(key: String, callback: (User) -> Unit) {
@@ -160,40 +165,6 @@ class Firebase private constructor() {
                 }
             })
         }
-
-        fun deleteMessage(message: Message) {
-            val user1 = message.from!!
-            val user2 = message.to!!
-            val key = message.key!!
-            users.child(user1).child("messages").child(key).removeValue()
-            users.child(user2).child("messages").child(key).removeValue()
-        }
-
-        fun deleteChat(key1: String, key2: String) {
-            deleteAll(key1, key2)
-            deleteAll(key2, key1)
-        }
-
-        private fun deleteAll(key1: String, key2: String) {
-            val messages = users.child(key1).child("messages")
-            messages.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val u = snapshot.children
-                    u.forEach {
-                        val message = it.getValue(Message::class.java)!!
-                        if ((message.from == key1 && message.to == key2) || (message.from == key2 && message.to == key1)) messages.child(
-                            message.key!!
-                        ).removeValue()
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("TAG", error.toString())
-                }
-
-            })
-        }
-
 
         fun getChats(
             searchKey: String,

@@ -80,7 +80,7 @@ fun LoginScreen(navController: NavController) {
             value = password.value,
             shape = RoundedCornerShape(16.dp),
             onValueChange = { password.value = it },
-            label = { Text("Password") })
+            label = { Text("Parol") })
 
         Button(
             onClick = {
@@ -102,7 +102,7 @@ fun LoginScreen(navController: NavController) {
 
         ) {
             Text(
-                text = "Log in",
+                text = "Tizimga kirish",
                 modifier = Modifier.padding(6.dp),
                 color = Color.Black,
                 fontSize = 14.sp
@@ -117,7 +117,7 @@ fun LoginScreen(navController: NavController) {
 
         ) {
             Text(
-                text = "Sign up",
+                text = "Ro'yhatdan o'tish",
                 modifier = Modifier.padding(6.dp),
                 color = Color.Black,
                 fontSize = 14.sp
