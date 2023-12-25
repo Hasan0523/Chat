@@ -145,7 +145,7 @@ fun ChatTopBar(user: MutableState<User>) {
             Text(text = user.value.firstName + " " + user.value.lastName, textAlign = TextAlign.Center, color = Color.Black)
             Text(text = user.value.username!!, textAlign = TextAlign.Center, color = Color.Gray, fontSize = 12.sp)
         }
-        Image(painter = painterResource(id =R.drawable.person ),contentDescription ="" )
+
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)

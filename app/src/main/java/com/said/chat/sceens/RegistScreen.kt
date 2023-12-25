@@ -128,7 +128,7 @@ fun RegisterScreen(navController: NavController){
             ),
             value = password.value,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = { password.value = it.trim() },
+            onValueChange = { password.value = it.trim()},
             label = { Text("Parol") },
             leadingIcon = {
                 Icon(
@@ -139,6 +139,10 @@ fun RegisterScreen(navController: NavController){
         Button(
             onClick = {
                 if (pressed) return@Button
+                if (password.value.length < 8){
+                    Toast.makeText(context, "Parol 8 tadan ko'p bo'lishi kerak ! ", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
                 if (firstName.value.isNotEmpty() && userName.value.isNotEmpty() && password.value.isNotEmpty()){
                     pressed = true
                     Firebase.usernameAvailable(userName.value){ available->
